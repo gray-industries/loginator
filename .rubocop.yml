@@ -8,6 +8,8 @@ Encoding:
 CaseIndentation:
   Enabled: false
 
-# MethodLength is superseded by Reek's TooManyStatements smell-finder.
 MethodLength:
+  Enabled: false
+
+AbcSize:
   Enabled: false
