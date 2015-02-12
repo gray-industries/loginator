@@ -8,6 +8,8 @@ remote APIs.
 
 ## Installation
 
+Requires Ruby >= 2.0
+
 Add this line to your application's Gemfile:
 
     gem 'loginator'
