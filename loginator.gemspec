@@ -4,10 +4,10 @@
 require File.expand_path('../lib/loginator/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ['SET ME']
-  gem.email         = ['SET ME']
-  gem.description   = 'I am an application stub'
-  gem.summary       = 'app stub'
+  gem.authors       = ['Greg Poirier']
+  gem.email         = ['grep@gray.industries']
+  gem.description   = 'Standardized logging of API requests/responses'
+  gem.summary       = 'Loginator is a mechanism for standardizing the logging of API requests and responses.'
 
   gem.files         = `git ls-files`.split($OUTPUT_RECORD_SEPARATOR)
   gem.executables   = gem.files.grep(/^bin\//).map { |f| File.basename(f) }

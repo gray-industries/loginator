@@ -1,6 +1,7 @@
 # Loginator
 
-TODO: Write a gem description
+Loginator is a gem for standardizing the logging of requests and responses for
+remote APIs.
 
 ## Installation
 
@@ -18,7 +19,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Remote APIs (be they HTTP or otherwise) follow a pattern fairly similar to that
+of a common HTTP API. 
+
+### Requests
+
+A request is typically made to a path with request parameters. We attach
+metadata to this request in order to track it throughout a distributed system.
+This metadata includes a unique identifier and a UTC timestamp.
+
+### Responses
+
+A response is typically yielded to requests. It includes the same metadata
+as a request, but also a response typically has associated with it a status
+code indicating success or failure of some kind (we have chosen to standardize
+around HTTP status codes -- or some interpretation thereof). Like a request,
+a response typically also contains a body.
 
 ## Contributing
 
@@ -30,8 +46,6 @@ TODO: Write usage instructions here
 
 
 ## Testing
-
-TODO: Add information specific to your gem's test suite.
 
 The Rakefile comes with several convenience tasks for running tests as well. By rake task:
 
