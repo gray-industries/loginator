@@ -1,5 +1,8 @@
 # Loginator
 
+[![Code Climate](https://codeclimate.com/github/gray-industries/loginator/badges/gpa.svg)](https://codeclimate.com/github/gray-industries/loginator)
+[![Build Status](https://travis-ci.org/gray-industries/loginator.svg)](https://travis-ci.org/gray-industries/loginator)
+
 Loginator is a gem for standardizing the logging of requests and responses for
 remote APIs.
 
