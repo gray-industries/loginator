@@ -10,9 +10,9 @@ shared_examples_for 'struct_with_defaults' do
       end
 
       it 'sets default timestamp' do
-        expect(subject.timestamp).to be_a_kind_of(Integer)
-        expect(subject.timestamp).to be <= Time.now.utc.to_i
-        expect(subject.timestamp).to be > 0
+        expect(subject.timestamp).to be_a_kind_of(Float)
+        expect(subject.timestamp).to be <= Time.now.utc.to_f
+        expect(subject.timestamp).to be > 0.0
       end
     end
 

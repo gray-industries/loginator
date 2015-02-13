@@ -1,5 +1,6 @@
 require 'multi_json'
 require 'loginator/jsonable_struct'
+require 'loginator/transaction'
 
 # Loginator::Request
 module Loginator
@@ -10,13 +11,14 @@ module Loginator
   #
   Request = Struct.new(:request_id, :timestamp, :path, :params) do
     include Loginator::JsonableStruct
+    include Loginator::Transaction
 
     # Create a new Loginator::Request
-    # @param request_id [String]  (SecureRandom.uuid) Unique identifier for the request
-    # @param timestamp [Integer]  (Time.now.utc.to_i) Time of the request
-    # @param path [String]        (nil)               Path associated with the request
-    # @param params [String]      ({})                Parameters of the request
-    def initialize(request_id = SecureRandom.uuid, timestamp = Time.now.utc.to_i, path = nil, params = {})
+    # @param request_id [String] (SecureRandom.uuid) Unique identifier for the request
+    # @param timestamp [Float]   (Time.now.utc.to_f) Time of the request
+    # @param path [String]       (nil)               Path associated with the request
+    # @param params [String]     ({})                Parameters of the request
+    def initialize(request_id = uuid, timestamp = format_time, path = nil, params = {})
       super
     end
   end
