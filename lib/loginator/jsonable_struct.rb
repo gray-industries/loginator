@@ -11,11 +11,16 @@ module Loginator
 
     # class level mixins
     module ClassMethods #:nodoc
-      def from_json(json)
-        json_type = json.delete('type')
-        fail(ArgumentError, format('Incorrect message type: %s', json_type)) unless json_type == type
-        fail(ArgumentError, format('Hash must contain keys: %s', members.join(', '))) unless valid_hash?(json)
-        new(*json.values)
+      def from_hash(hsh)
+        hsh_type = hsh.delete('type')
+        fail(ArgumentError, format('Incorrect message type: %s', hsh_type)) unless hsh_type == type
+        fail(ArgumentError, format('Hash must contain keys: %s', members.join(', '))) unless valid_hash?(hsh)
+        new(*hsh.values)
+      end
+
+      def from_json(json_str)
+        json = MultiJson.load(json_str)
+        from_hash(json)
       end
 
       def type
