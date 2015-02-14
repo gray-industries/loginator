@@ -31,7 +31,7 @@ shared_examples_for 'struct_with_defaults' do
 
       describe '.from_json' do
         it 'faithfully deserializes' do
-          expect(described_class.from_json(MultiJson.load(subject.to_json))).to eq(subject)
+          expect(described_class.from_json(subject.to_json)).to eq(subject)
         end
       end
     end
