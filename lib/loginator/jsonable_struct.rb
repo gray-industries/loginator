@@ -2,7 +2,7 @@ require 'multi_json'
 
 module Loginator
   # Makes a Struct easily serializable and deserializable. Adds the
-  # from_hash class method and to_json instance method to Struct
+  # from_json class method and to_json instance method to Struct
   # classes.
   module JsonableStruct
     def self.included(base)
@@ -11,9 +11,15 @@ module Loginator
 
     # class level mixins
     module ClassMethods #:nodoc
-      def from_hash(hsh)
-        fail(ArgumentError, format('Hash must contain keys: %s', members.join(', '))) unless valid_hash?(hsh)
-        new(*hsh.values)
+      def from_json(json)
+        json_type = json.delete('type')
+        fail(ArgumentError, format('Incorrect message type: %s', json_type)) unless json_type == type
+        fail(ArgumentError, format('Hash must contain keys: %s', members.join(', '))) unless valid_hash?(json)
+        new(*json.values)
+      end
+
+      def type
+        @type ||= name.split('::').last.downcase.freeze
       end
 
       private
@@ -27,7 +33,8 @@ module Loginator
     end #:rubocop:enable documentation
 
     def to_json
-      MultiJson.dump(to_h)
+      MultiJson.dump(to_h.merge(type: self.class.type))
     end
+    alias_method :to_s, :to_json
   end
 end
