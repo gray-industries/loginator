@@ -3,8 +3,21 @@
 [![Code Climate](https://codeclimate.com/github/gray-industries/loginator/badges/gpa.svg)](https://codeclimate.com/github/gray-industries/loginator)
 [![Build Status](https://travis-ci.org/gray-industries/loginator.svg)](https://travis-ci.org/gray-industries/loginator)
 
-Loginator is a gem for standardizing the logging of requests and responses for
-remote APIs.
+Loginator is a gem for standardizing different types of log formats. It particularly focuses on standardized
+logging for service interactions in a SOA / distributed application.
+
+I am tired of having useless logs at work, and I wanted to standardize those logs. Jordan Sissel puts it
+much better than me:
+
+> I want to be able to log in a structured way and have the log output know how that should be formatted.
+> Maybe for humans, maybe for computers (as JSON), maybe as some other format. Maybe you want to log to a
+> csv file because that's easy to load into Excel for analysis, but you don't want to change all your
+> applications log methods?
+
+I found this in the README.md for ruby-cabin (jordansissel/ruby-cabin). When I read this, I was pretty
+floored. "Someone else get it." This is exactly what I'm trying to accomplish with Loginator, but
+I want to take Cabin just a step further. It's intended for use in my Gray Industries projects, but
+if someone else finds it useful, that would be amazing.
 
 ## Installation
 
@@ -27,19 +40,38 @@ Or install it yourself as:
 Remote APIs (be they HTTP or otherwise) follow a pattern fairly similar to that
 of a common HTTP API. 
 
-### Requests
+### Transactions
 
-A request is typically made to a path with request parameters. We attach
-metadata to this request in order to track it throughout a distributed system.
-This metadata includes a unique identifier and a UTC timestamp.
+Transactions include the following fields:
+  - uuid (string)
+  - timestamp (serialized as a float, otherwise Time)
+  - duration (float)
+  - path (string)
+  - status (integer)
+  - request (string)
+  - response (string)
+  - params (hash)
 
-### Responses
+Custom transactions can be made by extending Transaction. These custom transactions
+could include additional fields, change field types, etc. In general, however, API
+transactions have all or most of these characteristics regardless of protocol.
 
-A response is typically yielded to requests. It includes the same metadata
-as a request, but also a response typically has associated with it a status
-code indicating success or failure of some kind (we have chosen to standardize
-around HTTP status codes -- or some interpretation thereof). Like a request,
-a response typically also contains a body.
+To use a transaction, wrap your API response generation in a Transaction#begin block
+like so (as seen in the Sinatra middleware):
+
+```
+Loginator::Transaction.new.begin do |txn|
+  txn.path = env['PATH_INFO']
+  txn.request = req
+  status, _headers, body = @app.call(env)
+  txn.status = status
+  txn.response = body
+  [status, _headers, body]
+end
+```
+
+The begin method will return the last line much like a function, allowing you
+to seemlessly integrate transaction logging into your middleware.
 
 ## Contributing
 
