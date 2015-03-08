@@ -15,9 +15,9 @@ much better than me:
 > applications log methods?
 
 I found this in the README.md for ruby-cabin (jordansissel/ruby-cabin). When I read this, I was pretty
-floored. "Someone else get it." This is exactly what I'm trying to accomplish with Loginator, but
-I want to take Cabin just a step further. It's intended for use in my Gray Industries projects, but
-if someone else finds it useful, that would be amazing.
+floored. "Someone else gets it." This is exactly what I'm trying to accomplish with Loginator, but
+I want to take the idea of Cabin in a slightly different direction. It's intended for use in my Gray
+Industries projects, but if someone else finds it useful, that would be amazing.
 
 ## Installation
 
@@ -63,10 +63,10 @@ like so (as seen in the Sinatra middleware):
 Loginator::Transaction.new.begin do |txn|
   txn.path = env['PATH_INFO']
   txn.request = req
-  status, _headers, body = @app.call(env)
+  status, headers, body = @app.call(env)
   txn.status = status
   txn.response = body
-  [status, _headers, body]
+  [status, headers, body]
 end
 ```
 
@@ -76,11 +76,10 @@ to seemlessly integrate transaction logging into your middleware.
 ## Middleware
 
 This Gem includes middleware. I am not adding explicit dependencies on the frameworks I'm targeting.
-that being said, I do want to document the version of those frameworks and have put a separate Gemfile
-in `lib/loginator/middleware` that includes the appropriate development dependencies required for
-for testing and development. I am also adding that Gemfile to the gem's root Gemfile to make testing
-and contributing easier. I feel it is necessary to draw this distinction, because Loginator does not
-explicitly require those gems.
+That being said, I do want to document the version of those frameworks and have put a separate Gemfile
+in `lib/loginator/middleware` that includes the appropriate development dependencies required. I am
+also adding that Gemfile to the gem's root Gemfile to make testing and contributing easier. I think
+it is necessary to draw this distinction, because using Loginator does not explicitly require those gems.
 
 ## Contributing
 

@@ -24,6 +24,10 @@ module Loginator
       end
     end
 
+    # The following may look funny to people, but please know that it's simply an attempt to
+    # convey intent. I want Transactions to be thought of as immutable objects. I'd like to
+    # take them in that direction eventually, but doing so in a way that is comprehensible
+    # is difficult. After rewriting the interface to Transaction several times, I settled here.
     attr_accessor :path, :request, :params, :response, :status
 
     attr_reader :uuid, :timestamp, :duration
@@ -45,9 +49,9 @@ module Loginator
     # @option opts [String]  :response Body of the response
     # @option opts [Float]   :duration Duration of the request
     def initialize(opts = {})
+      # TODO: UUID Generation should have a service interface
       @uuid = opts.delete(:uuid) || SecureRandom.uuid
       @timestamp = opts.delete(:timestamp) || Time.now
-      @duration = opts.delete(:duration)
       opts.each_pair do |k, v|
         send("#{k}=", v)
       end
@@ -63,8 +67,13 @@ module Loginator
     # status or response. You must do so in your block if you wish to
     # record any failures.
     # @param [Block] &blk optional
+    # @yield [Transaction] the transaction object after it has been updated
+    # @return [] Returns whatever the block returns
     def begin
       @timestamp = Time.now
+      # NOTE: yield self is a bit of a smell to me, but I am okay with this
+      # as the block is evaluated in the context of the caller and not of
+      # the Transaction object.
       yield self if block_given?
     ensure
       finished
@@ -115,6 +124,9 @@ module Loginator
 
     # Filter the transaction hash's elements based on a mapping of
     # element->proc pairs. This is largely for serialization/deserialization.
+    # NOTE: This modifies the hash in place.
+    # @param [Hash] hsh the hash to be modified
+    # @return [Hash] the modified hash
     def filter_hash!(hsh)
       [[:timestamp, ->(t) { t.to_f }]].each do |k, f|
         hsh[k] = f.call(hsh[k])
