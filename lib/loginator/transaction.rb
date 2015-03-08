@@ -24,11 +24,13 @@ module Loginator
       end
     end
 
-    attr_reader :uuid, :timestamp, :status, :path, :request, :params, :response, :duration
+    attr_accessor :path, :request, :params, :response, :status
+
+    attr_reader :uuid, :timestamp, :duration
 
     protected
 
-    attr_writer :uuid, :timestamp, :status, :path, :request, :params, :response, :duration
+    attr_writer :uuid, :timestamp, :duration
 
     public
 
