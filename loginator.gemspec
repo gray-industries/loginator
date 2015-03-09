@@ -9,6 +9,7 @@ Gem::Specification.new do |gem|
   gem.description   = 'Standardized logging of API requests/responses'
   gem.summary       = 'Loginator is a mechanism for standardizing the logging of API requests and responses.'
 
+  gem.license       = ['MIT']
   gem.files         = `git ls-files`.split($OUTPUT_RECORD_SEPARATOR)
   gem.executables   = gem.files.grep(/^bin\//).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(/^(test|spec|features)\//)
