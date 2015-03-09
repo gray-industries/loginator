@@ -1,4 +1,6 @@
 require 'securerandom'
+require 'sinatra/base'
+require 'loginator/transaction'
 
 module Loginator
   module Middleware
