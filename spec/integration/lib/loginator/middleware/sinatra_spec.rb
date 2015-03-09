@@ -1,5 +1,4 @@
 require 'loginator/middleware/sinatra'
-require 'rack'
 
 describe Loginator::Middleware::Sinatra do
   let(:app) { ->(_env) { response } }
